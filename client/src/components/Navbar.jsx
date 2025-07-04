@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import {assets} from '../assets/assets'
 import { useAppContext } from '../context/AppContext'
 import toast from 'react-hot-toast'
@@ -37,6 +37,12 @@ function Navbar() {
                 <NavLink to="/">Home</NavLink>
                 <NavLink to="/products">All Products</NavLink>
                 <NavLink to="/">Contact</NavLink>
+                <Link
+                to="/seller"
+                className="cursor-pointer px-8 py-2 bg-primary hover:bg-primary-dull transition text-white rounded-full"
+                >
+                Seller Dashboard
+                </Link>
                 <div className="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
                     <input onChange={(e)=>{setSearchQuery(e.target.value)}} className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500" type="text" placeholder="Search products" />
                     <img src={assets.search_icon} alt='search'  className = 'w-4 h-4'/>
