@@ -1,8 +1,15 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 const NewsLetter = () => {
     
     return (
-        <div className="flex flex-col items-center justify-center text-center space-y-2 mt-24 pb-14">
+        <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center justify-center text-center space-y-2 mt-24 pb-14"
+        >
             <h1 className="md:text-4xl text-2xl font-semibold">Never Miss a Deal!</h1>
             <p className="md:text-lg text-gray-500/70 pb-8">
                 Subscribe to get the latest offers, new arrivals, and exclusive discounts
@@ -14,11 +21,16 @@ const NewsLetter = () => {
                     placeholder="Enter your email id"
                     required
                 />
-                <button type="submit" className="md:px-12 px-8 h-full text-white bg-primary hover:bg-primary-dull transition-all cursor-pointer rounded-md rounded-l-none">
+                <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    type="submit"
+                    className="md:px-12 px-8 h-full text-white bg-primary hover:bg-primary-dull transition-all cursor-pointer rounded-md rounded-l-none"
+                >
                     Subscribe
-                </button>
+                </motion.button>
             </form>
-        </div>
+        </motion.div>
     )
 }
 export default NewsLetter;

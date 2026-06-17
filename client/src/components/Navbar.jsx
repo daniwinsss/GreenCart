@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import {assets} from '../assets/assets'
 import { useAppContext } from '../context/AppContext'
 import toast from 'react-hot-toast'
 function Navbar() {
     const [open, setOpen] = React.useState(false)
+    const [scrolled, setScrolled] = useState(false)
     const {user,setUser,setShowUserLogin,navigate,setSearchQuery,searchQuery,getCartCount,axios} = useAppContext();
     const logout = async () => {
         try {
@@ -26,8 +27,13 @@ function Navbar() {
             navigate('/products');
         }
     }, [searchQuery]);
+    useEffect(() => {
+        const handleScroll = () => setScrolled(window.scrollY > 20)
+        window.addEventListener('scroll', handleScroll, { passive: true })
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
     return (
-        <nav className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 bg-white relative transition-all">
+        <nav className={`flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 transition-all duration-300 ${scrolled ? 'bg-white/80 backdrop-blur-lg shadow-sm' : 'bg-white'}`}>
             <NavLink to="/" onClick={() => setOpen(false)}>
                 <img className="h-9" src={assets.logo} alt="logo" />
             </NavLink>

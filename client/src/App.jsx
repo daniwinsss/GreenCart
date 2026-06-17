@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import Navbar from './components/Navbar'
 import { Route,Routes, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
@@ -18,11 +18,31 @@ import AddProduct from './pages/seller/AddProduct'
 import ProductList from './pages/seller/ProductList'
 import Orders from './pages/seller/Orders'
 import Loading from './components/Loading'
+import gsap from 'gsap'
+import Lenis from 'lenis'
+
 function App() {
   const isSellerPath = useLocation().pathname.includes('/seller');
   const {showUserLogin,isSeller} = useAppContext();
+  const progressRef = useRef(null);
+
+  useEffect(() => {
+    const bar = document.getElementById('app-loader-bar');
+    if (bar) {
+      gsap.fromTo(bar, { width: '0%' }, { width: '100%', duration: 1.5, ease: 'power2.inOut', onComplete: () => { gsap.to(bar, { opacity: 0, duration: 0.3 }) } });
+    }
+  }, []);
+
+  useEffect(() => {
+    const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf) }
+    requestAnimationFrame(raf);
+    return () => lenis.destroy();
+  }, []);
+
   return (
     <div className='text-default min-h-screen text-gray-700 bg-white'>
+      <div id="app-loader"><div id="app-loader-bar" ref={progressRef}></div></div>
       {isSellerPath ? null : <Navbar/>}
       {showUserLogin ? <Login/> : null}
       <Toaster/>
@@ -47,5 +67,4 @@ function App() {
     </div>
   )
 }
-
 export default App

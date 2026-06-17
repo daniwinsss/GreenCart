@@ -1,14 +1,23 @@
 import React from 'react'
+import { motion } from 'framer-motion'
 import { assets } from '../assets/assets'
 import { Link } from 'react-router-dom'
 function MainBanner() {
+  const stagger = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.2, delayChildren: 0.2 } },
+  }
+  const fadeUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+  }
   return (
-    <div className='relative'>
-      <img src={assets.main_banner_bg} alt="banner" className='w-full hidden md:block' />
-      <img src={assets.main_banner_bg_sm} alt="banner" className='w-full md:hidden' />
-      <div className="absolute inset-0 flex flex-col items-center md:items-start justify-end md:justify-center pb-24 md:pb-0 px-4 md:pl-18 lg:pl-24">
-        <h1 className='text-3xl md:text-4xl lg:text-5xl font-bold text-center md:text-left max-w-72 md:max-w-80 lg:max-w-105 leading-tight lg:leading-15'>Freshness You Can Trust, Savings You Will Love!</h1>
-      <div className='flex items-center mt-6 font-medium'>
+    <div className='relative overflow-hidden'>
+      <motion.img initial={{ scale: 1.1, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 1, ease: 'easeOut' }} src={assets.main_banner_bg} alt="banner" className='w-full hidden md:block' />
+      <motion.img initial={{ scale: 1.1, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 1, ease: 'easeOut' }} src={assets.main_banner_bg_sm} alt="banner" className='w-full md:hidden' />
+      <motion.div initial="hidden" animate="visible" variants={stagger} className="absolute inset-0 flex flex-col items-center md:items-start justify-end md:justify-center pb-24 md:pb-0 px-4 md:pl-18 lg:pl-24">
+        <motion.h1 variants={fadeUp} className='text-3xl md:text-4xl lg:text-5xl font-bold text-center md:text-left max-w-72 md:max-w-80 lg:max-w-105 leading-tight lg:leading-15'>Freshness You Can Trust, Savings You Will Love!</motion.h1>
+      <motion.div variants={fadeUp} className='flex items-center mt-6 font-medium'>
         <Link to = {"/products"} className='group flex items-center gap-2 px-7 md:px-9 py-3 bg-primary hover:bg-primary-dull transition rounded text-white cursor-pointer'>
         Shop Now 
         <img className = 'md:hidden transition group-focus:translate-x-1'src={assets.white_arrow_icon} alt="arrow" />
@@ -17,8 +26,8 @@ function MainBanner() {
         Explore Deals
         <img className = 'transition group-hover:translate-x-1'src={assets.black_arrow_icon} alt="arrow" />
         </Link>
-      </div>
-      </div>
+      </motion.div>
+      </motion.div>
     </div>
   )
 }

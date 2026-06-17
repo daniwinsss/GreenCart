@@ -12,3 +12,34 @@
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+#app-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: transparent;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+#app-loader-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #4fbf8b, #44ae7c);
+  border-radius: 0 2px 2px 0;
+}

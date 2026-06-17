@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { useAppContext } from '../context/AppContext';
 import { assets, dummyAddress } from '../assets/assets';
 import toast from 'react-hot-toast';
@@ -36,7 +37,6 @@ const Cart = () => {
             toast.error(error.message);
         }
     }    
-
 
     const placeOrder = async() => {
         try {
@@ -90,7 +90,7 @@ const Cart = () => {
 
     return products.length > 0 && cartItems ? 
     (
-        <div className="flex flex-col md:flex-row mt-16">
+        <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4, ease: 'easeOut' }} className="flex flex-col md:flex-row mt-16">
             <div className='flex-1 max-w-4xl'>
                 <h1 className="text-3xl font-medium mb-6">
                     Shopping Cart <span className="text-sm text-primary">{getCartCount()}</span>
@@ -102,8 +102,17 @@ const Cart = () => {
                     <p className="text-center">Action</p>
                 </div>
 
+                <motion.div
+                    initial="hidden"
+                    animate="visible"
+                    variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.06 } } }}
+                >
                 {cartArray.map((product, index) => (
-                    <div key={index} className="grid grid-cols-[2fr_1fr_1fr] text-gray-500 items-center text-sm md:text-base font-medium pt-3">
+                    <motion.div
+                        key={index}
+                        variants={{ hidden: { opacity: 0, x: -30 }, visible: { opacity: 1, x: 0, transition: { duration: 0.3 } } }}
+                        className="grid grid-cols-[2fr_1fr_1fr] text-gray-500 items-center text-sm md:text-base font-medium pt-3"
+                    >
                         <div className="flex items-center md:gap-6 gap-3">
                             <div onClick={()=>{navigate(`/products/${product.category.toLowerCase()}/${product._id}`);scrollTo(0,0)}} className="cursor-pointer w-24 h-24 flex items-center justify-center border border-gray-300 rounded">
                                 <img className="max-w-full h-full object-cover" src={product.image[0]} alt={product.name} />
@@ -127,8 +136,9 @@ const Cart = () => {
                         <button onClick={()=>removeFromCart(product._id)} className="cursor-pointer mx-auto">
                             <img src={assets.remove_icon} alt="remove" className='inline-block w-6 h-6' />
                         </button>
-                    </div>)
+                    </motion.div>)
                 )}
+                </motion.div>
 
                 <button onClick={()=>{navigate("/products");scrollTo(0,0)}} className="group cursor-pointer flex items-center mt-8 gap-2 text-primary font-medium">
                     <img className='group-hover:translate-x-1 transition' src={assets.arrow_right_icon_colored} alt="arrow" />
@@ -188,11 +198,16 @@ const Cart = () => {
                     </p>
                 </div>
 
-                <button onClick = {placeOrder} className="w-full py-3 mt-6 cursor-pointer bg-primary text-white font-medium hover:bg-primary-dull transition">
+                <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick = {placeOrder}
+                    className="w-full py-3 mt-6 cursor-pointer bg-primary text-white font-medium hover:bg-primary-dull transition"
+                >
                     {paymentOption === "COD" ? "Place Order" : "Proceed to Checkout"}
-                </button>
+                </motion.button>
             </div>
-        </div>
+        </motion.div>
     ) : null;
 }
 export default Cart;
